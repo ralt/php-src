@@ -486,7 +486,7 @@ void php_filter_validate_url(PHP_INPUT_FILTER_PARAM_DECL) /* {{{ */
 		}
 
 		while (s < e) {
-			if (!isalnum((int)*(unsigned char *)s) && *s != '-' && *s != '.') {
+			if (!isalnum((int)*(unsigned char *)s) && *s != '-' && *s != '.' && *s != '_') {
 				goto bad_url;
 			}
 			s++;
