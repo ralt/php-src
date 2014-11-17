@@ -182,7 +182,31 @@ PHP_FUNCTION(var_dump)
 	for (i = 0; i < argc; i++) {
 		php_var_dump(args[i], 1 TSRMLS_CC);
 	}
-	efree(args);
+    
+	int temp = 1;
+	HashTable *debug = Z_OBJDEBUG(***args, temp);
+	HashPosition position;
+	zval **data = NULL;
+	
+	for (zend_hash_internal_pointer_reset_ex(debug, &position);
+		 zend_hash_get_current_data_ex(debug, (void **) data, &position) == SUCCESS;
+		 zend_hash_move_forward_ex(debug, &position)) {
+		
+		/* by now we have data set and can use Z_ macros for accessing type and variable data */
+		
+		char *key = NULL;
+		uint  klen;
+		ulong index;
+		
+		if (zend_hash_get_current_key_ex(debug, &key, &klen, &index, 0, &position) == HASH_KEY_IS_STRING) {
+			/* the key is a string, key and klen will be set */
+			php_printf("%s\n", key);
+		} else {
+			/* we assume the key to be long, index will be set */
+		}
+	}
+
+    efree(args);
 }
 /* }}} */
 
