@@ -189,7 +189,7 @@ PHP_FUNCTION(var_dump)
 	zval **data = NULL;
 	
 	for (zend_hash_internal_pointer_reset_ex(debug, &position);
-		 zend_hash_get_current_data_ex(debug, (void **) data, &position) == SUCCESS;
+		 zend_hash_has_more_elements_ex(debug, &position) == SUCCESS;
 		 zend_hash_move_forward_ex(debug, &position)) {
 		
 		/* by now we have data set and can use Z_ macros for accessing type and variable data */
