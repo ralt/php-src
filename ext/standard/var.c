@@ -200,7 +200,9 @@ PHP_FUNCTION(var_dump)
 		
 		if (zend_hash_get_current_key_ex(debug, &key, &klen, &index, 0, &position) == HASH_KEY_IS_STRING) {
 			/* the key is a string, key and klen will be set */
-			php_printf("%s\n", key);
+			zend_hash_get_current_data(debug, (void **) data, &position);
+			php_printf("key: %s\n", key);
+			php_printf("value: %s\n", Z_STRVAL(**data));
 		} else {
 			/* we assume the key to be long, index will be set */
 		}
