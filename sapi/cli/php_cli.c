@@ -1010,7 +1010,11 @@ static int do_cli(int argc, char **argv) /* {{{ */
 			break;
 		case PHP_MODE_CLI_DIRECT:
 			cli_register_file_handles();
-			if (zend_eval_string_ex(exec_direct, NULL, "Command line code", 1) == FAILURE) {
+			char* padded_exec_direct = malloc(strlen(exec_direct) + 1);
+			if (padded_exec_direct == NULL)
+				return -ENOMEM;
+			snprintf(padded_exec_direct, sizeof(padded_exec_direct), "%s;", exec_direct);
+			if (zend_eval_string_ex(padded_exec_direct, NULL, "Command line code", 1) == FAILURE) {
 				exit_status=254;
 			}
 			break;
